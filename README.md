@@ -15,15 +15,31 @@ Python toolkit for AI agents to fetch crypto market data from `ccxt`, compute co
 The repo is set up for self-contained agent execution:
 
 ```bash
-bash /workspace/scripts/run-tool.sh --help
+./finance-market-skills --help
 ```
 
 The wrapper adds both `vendor/` and `src/` to `PYTHONPATH`, so the bundled `ccxt` runtime works without installing dependencies first.
 
-If an agent is already running from the repo root and mistakenly prefixes the path with `./workspace/...`, a compatibility shim is also available:
+Preferred launchers from the repo root:
 
 ```bash
+./finance-market-skills --help
+bash ./scripts/run-tool.sh --help
+```
+
+Compatibility launchers for environments that mount the repo under `/workspace`:
+
+```bash
+bash /workspace/scripts/run-tool.sh --help
 ./workspace/scripts/run-tool.sh --help
+```
+
+If the sandbox mount point is unclear, first run:
+
+```bash
+pwd
+ls
+find . -path '*/scripts/run-tool.sh' -o -name 'finance-market-skills'
 ```
 
 ## Usage
@@ -46,16 +62,16 @@ print(scan_top_movers("binance")["data"]["results"][:3])
 ## CLI Usage
 
 ```bash
-bash /workspace/scripts/run-tool.sh get-ticker --exchange binance --symbol BTC/USDT --pretty
+./finance-market-skills get-ticker --exchange binance --symbol BTC/USDT --pretty
 
-bash /workspace/scripts/run-tool.sh compute-indicators \
+./finance-market-skills compute-indicators \
   --exchange binance \
   --symbol BTC/USDT \
   --timeframe 1h \
   --indicators rsi,macd,bbands \
   --pretty
 
-bash /workspace/scripts/run-tool.sh scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
+./finance-market-skills scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
 ```
 
 ## Skill Folder
@@ -65,7 +81,7 @@ The repo now includes a ready-to-use root Skill at [SKILL.md](file:///workspace/
 Preferred wrapper:
 
 ```bash
-bash /workspace/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
+./finance-market-skills get-price --exchange binance --symbol BTC/USDT --pretty
 ```
 
 ## Response Shape
@@ -88,3 +104,4 @@ Successful calls return a dictionary with:
 - Most scanner functions loop over many symbols, so keep `max_symbols` conservative.
 - If you want a local editable install for development, keep using the wrapper so the vendored runtime is available.
 - Do not test the bundled dependency with plain `python3 -c "import ccxt"` unless you also set `PYTHONPATH=/workspace/vendor:/workspace/src`.
+- In unknown sandboxes, discover the launcher path first instead of assuming `/workspace` exists.
