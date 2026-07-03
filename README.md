@@ -61,7 +61,7 @@ The repo now includes a ready-to-use root Skill at [SKILL.md](file:///workspace/
 Local wrapper:
 
 ```bash
-./scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
+/workspace/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
 ```
 
 ## Response Shape

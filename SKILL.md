@@ -1,7 +1,7 @@
 ---
 name: crypto-market-toolkit
 description: "Use when the user asks for crypto token prices, ticker data, OHLCV candles, order books, trades, technical indicators, or market scans powered by ccxt."
-allowed-tools: Bash(crypto-market-toolkit:*), Bash(python -m crypto_market_toolkit.cli:*), Bash(./scripts/run-tool.sh:*)
+allowed-tools: Bash(crypto-market-toolkit:*), Bash(python -m crypto_market_toolkit.cli:*), Bash(/workspace/scripts/run-tool.sh:*)
 ---
 
 # Crypto Market Toolkit
@@ -50,10 +50,10 @@ or:
 python -m crypto_market_toolkit.cli --help
 ```
 
-or the repo-local wrapper:
+or the repo-local wrapper using an absolute path that does not depend on the agent working directory:
 
 ```bash
-./scripts/run-tool.sh --help
+/workspace/scripts/run-tool.sh --help
 ```
 
 ## Core Commands
