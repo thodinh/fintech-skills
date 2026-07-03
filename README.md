@@ -15,10 +15,16 @@ Python toolkit for AI agents to fetch crypto market data from `ccxt`, compute co
 The repo is set up for self-contained agent execution:
 
 ```bash
-/workspace/scripts/run-tool.sh --help
+bash /workspace/scripts/run-tool.sh --help
 ```
 
 The wrapper adds both `vendor/` and `src/` to `PYTHONPATH`, so the bundled `ccxt` runtime works without installing dependencies first.
+
+If an agent is already running from the repo root and mistakenly prefixes the path with `./workspace/...`, a compatibility shim is also available:
+
+```bash
+./workspace/scripts/run-tool.sh --help
+```
 
 ## Usage
 
@@ -40,16 +46,16 @@ print(scan_top_movers("binance")["data"]["results"][:3])
 ## CLI Usage
 
 ```bash
-/workspace/scripts/run-tool.sh get-ticker --exchange binance --symbol BTC/USDT --pretty
+bash /workspace/scripts/run-tool.sh get-ticker --exchange binance --symbol BTC/USDT --pretty
 
-/workspace/scripts/run-tool.sh compute-indicators \
+bash /workspace/scripts/run-tool.sh compute-indicators \
   --exchange binance \
   --symbol BTC/USDT \
   --timeframe 1h \
   --indicators rsi,macd,bbands \
   --pretty
 
-/workspace/scripts/run-tool.sh scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
+bash /workspace/scripts/run-tool.sh scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
 ```
 
 ## Skill Folder
@@ -59,7 +65,7 @@ The repo now includes a ready-to-use root Skill at [SKILL.md](file:///workspace/
 Preferred wrapper:
 
 ```bash
-/workspace/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
+bash /workspace/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
 ```
 
 ## Response Shape
@@ -81,3 +87,4 @@ Successful calls return a dictionary with:
 - Public APIs may differ by market type or symbol support.
 - Most scanner functions loop over many symbols, so keep `max_symbols` conservative.
 - If you want a local editable install for development, keep using the wrapper so the vendored runtime is available.
+- Do not test the bundled dependency with plain `python3 -c "import ccxt"` unless you also set `PYTHONPATH=/workspace/vendor:/workspace/src`.
