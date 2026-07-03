@@ -1,7 +1,7 @@
 ---
 name: finance-market-skills
 description: "Use when the user asks for crypto token prices, ticker data, OHLCV candles, order books, trades, technical indicators, or market scans powered by ccxt."
-allowed-tools: Bash(./finance-market-skills:*), Bash(finance-market-skills:*), Bash(./scripts/run-tool.sh:*), Bash(scripts/run-tool.sh:*), Bash(bash ./scripts/run-tool.sh:*), Bash(bash scripts/run-tool.sh:*), Bash(/workspace/scripts/run-tool.sh:*), Bash(./workspace/scripts/run-tool.sh:*)
+allowed-tools: Bash(./finance-market-skills:*), Bash(finance-market-skills:*), Bash(./scripts/run-tool.sh:*), Bash(scripts/run-tool.sh:*), Bash(bash ./scripts/run-tool.sh:*), Bash(bash scripts/run-tool.sh:*), Bash(/workspace/scripts/run-tool.sh:*), Bash(./workspace/scripts/run-tool.sh:*), Bash(find:*), Bash(pwd:*), Bash(ls:*)
 ---
 
 # Finance Market
