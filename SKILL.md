@@ -1,7 +1,7 @@
 ---
 name: crypto-market-toolkit
 description: "Use when the user asks for crypto token prices, ticker data, OHLCV candles, order books, trades, technical indicators, or market scans powered by ccxt."
-allowed-tools: Bash(crypto-market-toolkit:*), Bash(python -m crypto_market_toolkit.cli:*), Bash(/workspace/scripts/run-tool.sh:*)
+allowed-tools: Bash(crypto-market-toolkit:*), Bash(/workspace/scripts/run-tool.sh:*)
 ---
 
 # Crypto Market Toolkit
@@ -42,12 +42,6 @@ You can then call either:
 
 ```bash
 crypto-market-toolkit --help
-```
-
-or:
-
-```bash
-python -m crypto_market_toolkit.cli --help
 ```
 
 or the repo-local wrapper using an absolute path that does not depend on the agent working directory:
@@ -143,3 +137,4 @@ Typical failure shape:
 - Keep scanner universes conservative because public APIs are rate-limited.
 - If a command returns `ok=false` and `retryable=true`, retry once with smaller scope before escalating.
 - If the user only wants a short answer, summarize from `summary` and `highlights` instead of dumping raw JSON.
+- For agent execution, prefer `/workspace/scripts/run-tool.sh ...` over `python -m ...` so the runtime does not depend on package installation or `PYTHONPATH`.
