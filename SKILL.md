@@ -32,11 +32,18 @@ Do not use this Skill for:
 
 ## Install
 
-From the project root:
+Before first use, install the local package and dependencies from the project root:
 
 ```bash
 python -m pip install -e ".[dev]"
 ```
+
+This installs the toolkit itself plus the dependencies declared in `pyproject.toml`, including:
+
+- `ccxt` for exchange market data
+- `pytest` for local verification and development checks
+
+If the agent has not run the install step yet, do that before calling any market-data command.
 
 You can then call either:
 
@@ -138,3 +145,20 @@ Typical failure shape:
 - If a command returns `ok=false` and `retryable=true`, retry once with smaller scope before escalating.
 - If the user only wants a short answer, summarize from `summary` and `highlights` instead of dumping raw JSON.
 - For agent execution, prefer `/workspace/scripts/run-tool.sh ...` over `python -m ...` so the runtime does not depend on package installation or `PYTHONPATH`.
+
+## Troubleshooting
+
+- If you see `ModuleNotFoundError: No module named 'crypto_market_toolkit'`, run:
+
+```bash
+python -m pip install -e ".[dev]"
+```
+
+- If a market-data command fails because `ccxt` is missing, run the same install command above before retrying.
+- For agent execution, prefer:
+
+```bash
+/workspace/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
+```
+
+instead of calling `python -m crypto_market_toolkit.cli ...` directly.
