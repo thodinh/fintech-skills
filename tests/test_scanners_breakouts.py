@@ -1,4 +1,4 @@
-from crypto_market_toolkit.scanners.breakouts import _eval_rule, scan_breakouts
+from finance_market_skills.scanners.breakouts import _eval_rule, scan_breakouts
 
 
 class DummyExchangeClient:
@@ -41,8 +41,8 @@ def test_scan_breakouts_filters_matching_symbols(monkeypatch) -> None:
             "error": None,
         }
 
-    monkeypatch.setattr("crypto_market_toolkit.scanners.breakouts.ExchangeClient", DummyExchangeClient)
-    monkeypatch.setattr("crypto_market_toolkit.scanners.breakouts.compute_indicators", fake_compute_indicators)
+    monkeypatch.setattr("finance_market_skills.scanners.breakouts.ExchangeClient", DummyExchangeClient)
+    monkeypatch.setattr("finance_market_skills.scanners.breakouts.compute_indicators", fake_compute_indicators)
 
     response = scan_breakouts("binance", rule="close>bb_upper", top_n=5)
 

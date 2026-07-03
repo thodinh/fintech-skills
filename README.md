@@ -1,4 +1,4 @@
-# Crypto Market Toolkit
+# Finance Market
 
 Python toolkit for AI agents to fetch crypto market data from `ccxt`, compute common indicators, and run lightweight market scanners with a JSON-friendly response envelope.
 
@@ -10,22 +10,20 @@ Python toolkit for AI agents to fetch crypto market data from `ccxt`, compute co
 - Shared response schema with `summary`, `highlights`, `data`, `stats`, `meta`, and structured errors
 - Offline-friendly unit tests for indicator math and orchestration helpers
 
-## Installation
+## Runtime
+
+The repo is set up for self-contained agent execution:
 
 ```bash
-python -m pip install -e ".[dev]"
+/workspace/scripts/run-tool.sh --help
 ```
 
-This also installs the CLI entrypoint:
-
-```bash
-crypto-market-toolkit --help
-```
+The wrapper adds both `vendor/` and `src/` to `PYTHONPATH`, so the bundled `ccxt` runtime works without installing dependencies first.
 
 ## Usage
 
 ```python
-from crypto_market_toolkit import compute_indicators, get_ticker, scan_top_movers
+from finance_market_skills import compute_indicators, get_ticker, scan_top_movers
 
 print(get_ticker("binance", "BTC/USDT")["summary"])
 print(
@@ -42,23 +40,23 @@ print(scan_top_movers("binance")["data"]["results"][:3])
 ## CLI Usage
 
 ```bash
-crypto-market-toolkit get-ticker --exchange binance --symbol BTC/USDT --pretty
+/workspace/scripts/run-tool.sh get-ticker --exchange binance --symbol BTC/USDT --pretty
 
-crypto-market-toolkit compute-indicators \
+/workspace/scripts/run-tool.sh compute-indicators \
   --exchange binance \
   --symbol BTC/USDT \
   --timeframe 1h \
   --indicators rsi,macd,bbands \
   --pretty
 
-crypto-market-toolkit scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
+/workspace/scripts/run-tool.sh scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
 ```
 
 ## Skill Folder
 
 The repo now includes a ready-to-use root Skill at [SKILL.md](file:///workspace/SKILL.md) with companion metadata at [openai.yaml](file:///workspace/agents/openai.yaml).
 
-Local wrapper:
+Preferred wrapper:
 
 ```bash
 /workspace/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
@@ -82,3 +80,4 @@ Successful calls return a dictionary with:
 - Exchange access depends on network availability and exchange uptime.
 - Public APIs may differ by market type or symbol support.
 - Most scanner functions loop over many symbols, so keep `max_symbols` conservative.
+- If you want a local editable install for development, keep using the wrapper so the vendored runtime is available.

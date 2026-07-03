@@ -1,4 +1,4 @@
-from crypto_market_toolkit.indicators.macd import macd_series
+from finance_market_skills.indicators.macd import macd_series
 
 
 def test_macd_shapes() -> None:

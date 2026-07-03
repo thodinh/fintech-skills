@@ -1,4 +1,4 @@
-from crypto_market_toolkit.indicators.rsi import rsi_series
+from finance_market_skills.indicators.rsi import rsi_series
 
 
 def test_rsi_series_length_matches_input() -> None:

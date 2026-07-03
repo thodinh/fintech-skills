@@ -1,6 +1,6 @@
 import json
 
-from crypto_market_toolkit.cli import main
+from finance_market_skills.cli import main
 
 
 def test_cli_get_ticker_prints_json(monkeypatch, capsys) -> None:
@@ -18,7 +18,7 @@ def test_cli_get_ticker_prints_json(monkeypatch, capsys) -> None:
             "error": None,
         }
 
-    monkeypatch.setattr("crypto_market_toolkit.cli.get_ticker", fake_get_ticker)
+    monkeypatch.setattr("finance_market_skills.cli.get_ticker", fake_get_ticker)
 
     exit_code = main(["get-ticker", "--exchange", "binance", "--symbol", "BTC/USDT"])
 
@@ -44,7 +44,7 @@ def test_cli_compute_indicators_parses_json_args(monkeypatch, capsys) -> None:
             "error": None,
         }
 
-    monkeypatch.setattr("crypto_market_toolkit.cli.compute_indicators", fake_compute_indicators)
+    monkeypatch.setattr("finance_market_skills.cli.compute_indicators", fake_compute_indicators)
 
     exit_code = main(
         [
