@@ -1,4 +1,4 @@
-from crypto_market_toolkit.indicators.vwap import vwap_series
+from finance_market_skills.indicators.vwap import vwap_series
 
 
 def test_vwap_length() -> None:

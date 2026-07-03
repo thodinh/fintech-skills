@@ -1,4 +1,4 @@
-from crypto_market_toolkit.indicators.bbands import bbands_series
+from finance_market_skills.indicators.bbands import bbands_series
 
 
 def test_bbands_length() -> None:

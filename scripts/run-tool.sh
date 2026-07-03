@@ -2,6 +2,6 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-export PYTHONPATH="${ROOT_DIR}/src${PYTHONPATH:+:${PYTHONPATH}}"
+export PYTHONPATH="${ROOT_DIR}/vendor:${ROOT_DIR}/src${PYTHONPATH:+:${PYTHONPATH}}"
 
-exec python -m crypto_market_toolkit.cli "$@"
+exec python -m finance_market_skills.cli "$@"

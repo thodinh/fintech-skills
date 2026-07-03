@@ -1,4 +1,4 @@
-from crypto_market_toolkit.indicators.atr import atr_series
+from finance_market_skills.indicators.atr import atr_series
 
 
 def test_atr_length() -> None:

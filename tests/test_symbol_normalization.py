@@ -1,4 +1,4 @@
-from crypto_market_toolkit.exchanges.client import normalize_symbol
+from finance_market_skills.exchanges.client import normalize_symbol
 
 
 def test_normalize_symbol_passthrough() -> None:

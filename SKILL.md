@@ -1,12 +1,12 @@
 ---
-name: crypto-market-toolkit
+name: finance-market-skills
 description: "Use when the user asks for crypto token prices, ticker data, OHLCV candles, order books, trades, technical indicators, or market scans powered by ccxt."
-allowed-tools: Bash(crypto-market-toolkit:*), Bash(/workspace/scripts/run-tool.sh:*)
+allowed-tools: Bash(/workspace/scripts/run-tool.sh:*)
 ---
 
-# Crypto Market Toolkit
+# Finance Market
 
-Use this Skill when you need a strong finance toolset for crypto market data. It wraps the local `crypto_market_toolkit` package and returns structured JSON that is friendly for AI agents:
+Use this Skill when you need a strong finance toolset for crypto market data. It wraps the local `finance_market_skills` package through the repo-local wrapper and returns structured JSON that is friendly for AI agents:
 
 - `ok`, `summary`, `highlights`
 - `query`, `data`, `stats`, `meta`
@@ -30,54 +30,41 @@ Do not use this Skill for:
 - DEX routing or swaps
 - live account trading
 
-## Install
-
-Before first use, install the local package and dependencies from the project root:
-
-```bash
-python -m pip install -e ".[dev]"
-```
-
-This installs the toolkit itself plus the dependencies declared in `pyproject.toml`, including:
-
-- `ccxt` for exchange market data
-- `pytest` for local verification and development checks
-
-If the agent has not run the install step yet, do that before calling any market-data command.
-
-You can then call either:
-
-```bash
-crypto-market-toolkit --help
-```
-
-or the repo-local wrapper using an absolute path that does not depend on the agent working directory:
+## Runtime
 
 ```bash
 /workspace/scripts/run-tool.sh --help
 ```
+
+The runtime is self-contained inside this repo:
+
+- `vendor/` contains the bundled exchange library stack
+- `src/` contains the `finance_market_skills` package
+- `/workspace/scripts/run-tool.sh` injects both paths into `PYTHONPATH`
+
+For agent execution, always prefer the absolute wrapper path above. Do not rely on an installed console script or on `python -m ...` directly.
 
 ## Core Commands
 
 ### Price / Ticker
 
 ```bash
-crypto-market-toolkit get-price --exchange binance --symbol BTC/USDT --pretty
-crypto-market-toolkit get-ticker --exchange bybit --symbol ETH/USDT --market-type spot --pretty
+finance-market-skills get-price --exchange binance --symbol BTC/USDT --pretty
+finance-market-skills get-ticker --exchange bybit --symbol ETH/USDT --market-type spot --pretty
 ```
 
 ### OHLCV / Order Book / Trades
 
 ```bash
-crypto-market-toolkit get-ohlcv --exchange binance --symbol BTC/USDT --timeframe 1h --limit 200 --series-tail-size 120 --pretty
-crypto-market-toolkit get-orderbook --exchange okx --symbol SOL/USDT --limit 50 --pretty
-crypto-market-toolkit get-trades --exchange bybit --symbol BTC/USDT --limit 100 --pretty
+finance-market-skills get-ohlcv --exchange binance --symbol BTC/USDT --timeframe 1h --limit 200 --series-tail-size 120 --pretty
+finance-market-skills get-orderbook --exchange okx --symbol SOL/USDT --limit 50 --pretty
+finance-market-skills get-trades --exchange bybit --symbol BTC/USDT --limit 100 --pretty
 ```
 
 ### Indicators
 
 ```bash
-crypto-market-toolkit compute-indicators \
+finance-market-skills compute-indicators \
   --exchange binance \
   --symbol BTC/USDT \
   --timeframe 1h \
@@ -89,10 +76,10 @@ crypto-market-toolkit compute-indicators \
 ### Scanners
 
 ```bash
-crypto-market-toolkit scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
-crypto-market-toolkit scan-volume-spikes --exchange binance --quote USDT --timeframe 1h --lookback 48 --spike-factor 3 --pretty
-crypto-market-toolkit scan-volatility-rank --exchange okx --quote USDT --timeframe 4h --top-n 10 --pretty
-crypto-market-toolkit scan-breakouts --exchange bybit --quote USDT --timeframe 1h --rule close>bb_upper --pretty
+finance-market-skills scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
+finance-market-skills scan-volume-spikes --exchange binance --quote USDT --timeframe 1h --lookback 48 --spike-factor 3 --pretty
+finance-market-skills scan-volatility-rank --exchange okx --quote USDT --timeframe 4h --top-n 10 --pretty
+finance-market-skills scan-breakouts --exchange bybit --quote USDT --timeframe 1h --rule close>bb_upper --pretty
 ```
 
 ## Recommended Agent Workflow
@@ -148,17 +135,17 @@ Typical failure shape:
 
 ## Troubleshooting
 
-- If you see `ModuleNotFoundError: No module named 'crypto_market_toolkit'`, run:
+- If you see `ModuleNotFoundError: No module named 'finance_market_skills'` or `No module named 'ccxt'`, the wrapper was likely bypassed. Retry with:
 
 ```bash
-python -m pip install -e ".[dev]"
+/workspace/scripts/run-tool.sh --help
 ```
 
-- If a market-data command fails because `ccxt` is missing, run the same install command above before retrying.
+- If a market-data command fails because the exchange upstream is unavailable, retry with a smaller scope or a different supported exchange.
 - For agent execution, prefer:
 
 ```bash
 /workspace/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
 ```
 
-instead of calling `python -m crypto_market_toolkit.cli ...` directly.
+instead of calling `finance-market-skills ...` or `python -m finance_market_skills.cli ...` directly.

@@ -1,4 +1,4 @@
-from crypto_market_toolkit.indicators.compute import compute_indicators
+from finance_market_skills.indicators.compute import compute_indicators
 
 
 def test_compute_indicators_with_mocked_ohlcv(monkeypatch) -> None:
@@ -21,7 +21,7 @@ def test_compute_indicators_with_mocked_ohlcv(monkeypatch) -> None:
             "error": None,
         }
 
-    monkeypatch.setattr("crypto_market_toolkit.indicators.compute.get_ohlcv", fake_get_ohlcv)
+    monkeypatch.setattr("finance_market_skills.indicators.compute.get_ohlcv", fake_get_ohlcv)
 
     response = compute_indicators(
         "binance",

@@ -1,4 +1,4 @@
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def test_ok_response_has_required_fields() -> None:
