@@ -56,12 +56,12 @@ crypto-market-toolkit scan-top-movers --exchange binance --quote USDT --top-n 10
 
 ## Skill Folder
 
-The repo now includes a ready-to-use Skill at [SKILL.md](file:///workspace/skills/crypto-market-toolkit/SKILL.md) with companion metadata at [openai.yaml](file:///workspace/skills/crypto-market-toolkit/agents/openai.yaml).
+The repo now includes a ready-to-use root Skill at [SKILL.md](file:///workspace/SKILL.md) with companion metadata at [openai.yaml](file:///workspace/agents/openai.yaml).
 
 Local wrapper:
 
 ```bash
-./skills/crypto-market-toolkit/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
+./scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
 ```
 
 ## Response Shape
