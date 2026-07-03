@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Rename the project from `crypto-market-toolkit` to `finance-market-skills` / `Finance Market`, vendor full `ccxt`, and make the root skill run without any install step in ephemeral agent sandboxes.
+**Goal:** Rename the project from `finance-market-skills` to `finance-market-skills` / `Finance Market`, vendor full `ccxt`, and make the root skill run without any install step in ephemeral agent sandboxes.
 
 **Architecture:** The implementation renames the Python package to `finance_market_skills`, renames the CLI and skill metadata to `finance-market-skills` / `Finance Market`, and adds a vendored `ccxt` runtime under `vendor/`. The root wrapper script becomes the canonical agent entrypoint by exporting `PYTHONPATH=/workspace/vendor:/workspace/src` so the runtime is fully self-contained.
 
@@ -23,8 +23,8 @@
 
 Removed or renamed:
 
-- `/workspace/src/crypto_market_toolkit/` -> `/workspace/src/finance_market_skills/`
-- legacy CLI name `crypto-market-toolkit` -> `finance-market-skills`
+- `/workspace/src/finance_market_skills/` -> `/workspace/src/finance_market_skills/`
+- legacy CLI name `finance-market-skills` -> `finance-market-skills`
 
 ---
 
@@ -83,7 +83,7 @@ Expected: prints `ok`
 ### Task 2: Rename the Python package to `finance_market_skills`
 
 **Files:**
-- Rename: `/workspace/src/crypto_market_toolkit/` -> `/workspace/src/finance_market_skills/`
+- Rename: `/workspace/src/finance_market_skills/` -> `/workspace/src/finance_market_skills/`
 - Modify: every Python file under `/workspace/src/finance_market_skills/`
 - Modify: `/workspace/tests/*.py`
 
@@ -92,7 +92,7 @@ Expected: prints `ok`
 Run:
 
 ```bash
-mv /workspace/src/crypto_market_toolkit /workspace/src/finance_market_skills
+mv /workspace/src/finance_market_skills /workspace/src/finance_market_skills
 ```
 
 Expected: the package now lives under `/workspace/src/finance_market_skills`.
@@ -110,7 +110,7 @@ from finance_market_skills.indicators.compute import compute_indicators
 There must be no remaining imports of:
 
 ```python
-crypto_market_toolkit
+finance_market_skills
 ```
 
 - [ ] **Step 3: Rewrite test imports to the new package name**
@@ -127,7 +127,7 @@ from finance_market_skills.indicators.compute import compute_indicators
 Run:
 
 ```bash
-! grep -R "crypto_market_toolkit" /workspace/src /workspace/tests && echo ok
+! grep -R "finance_market_skills" /workspace/src /workspace/tests && echo ok
 ```
 
 Expected: prints `ok`
@@ -324,7 +324,7 @@ finance-market-skills get-price --exchange binance --symbol BTC/USDT --pretty
 Run:
 
 ```bash
-! grep -n "Crypto Market Toolkit\\|crypto-market-toolkit" /workspace/README.md && echo ok
+! grep -n "Finance Market\\|finance-market-skills" /workspace/README.md && echo ok
 ```
 
 Expected: prints `ok`
@@ -423,7 +423,7 @@ Expected: completes without syntax errors.
 Run:
 
 ```bash
-! grep -R "crypto_market_toolkit" /workspace/src /workspace/tests /workspace/SKILL.md /workspace/README.md && echo ok
+! grep -R "finance_market_skills" /workspace/src /workspace/tests /workspace/SKILL.md /workspace/README.md && echo ok
 ```
 
 Expected: prints `ok`

@@ -94,7 +94,7 @@ sẽ export `PYTHONPATH` theo thứ tự ưu tiên:
 ### Cần làm
 
 - thêm vendor `ccxt` vào repo
-- đổi tên package Python từ `crypto_market_toolkit` sang `finance_market_skills`
+- đổi tên package Python từ `finance_market_skills` sang `finance_market_skills`
 - đổi console script sang `finance-market-skills`
 - cập nhật wrapper root để dùng `vendor` + `src`
 - cập nhật `SKILL.md`, `README.md`, metadata agent, import và test theo naming mới

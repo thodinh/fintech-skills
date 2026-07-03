@@ -1,4 +1,4 @@
-# Crypto Market Toolkit Implementation Plan
+# Finance Market Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -13,27 +13,27 @@
 ## Repo structure (to be created)
 
 - `pyproject.toml`
-- `src/crypto_market_toolkit/__init__.py`
-- `src/crypto_market_toolkit/schemas/response.py`
-- `src/crypto_market_toolkit/cache/memory_cache.py`
-- `src/crypto_market_toolkit/exchanges/registry.py`
-- `src/crypto_market_toolkit/exchanges/client.py`
-- `src/crypto_market_toolkit/market_data/price.py`
-- `src/crypto_market_toolkit/market_data/ticker.py`
-- `src/crypto_market_toolkit/market_data/ohlcv.py`
-- `src/crypto_market_toolkit/market_data/orderbook.py`
-- `src/crypto_market_toolkit/market_data/trades.py`
-- `src/crypto_market_toolkit/indicators/moving_averages.py`
-- `src/crypto_market_toolkit/indicators/rsi.py`
-- `src/crypto_market_toolkit/indicators/macd.py`
-- `src/crypto_market_toolkit/indicators/bbands.py`
-- `src/crypto_market_toolkit/indicators/atr.py`
-- `src/crypto_market_toolkit/indicators/vwap.py`
-- `src/crypto_market_toolkit/indicators/compute.py`
-- `src/crypto_market_toolkit/scanners/top_movers.py`
-- `src/crypto_market_toolkit/scanners/volume_spikes.py`
-- `src/crypto_market_toolkit/scanners/volatility_rank.py`
-- `src/crypto_market_toolkit/scanners/breakouts.py`
+- `src/finance_market_skills/__init__.py`
+- `src/finance_market_skills/schemas/response.py`
+- `src/finance_market_skills/cache/memory_cache.py`
+- `src/finance_market_skills/exchanges/registry.py`
+- `src/finance_market_skills/exchanges/client.py`
+- `src/finance_market_skills/market_data/price.py`
+- `src/finance_market_skills/market_data/ticker.py`
+- `src/finance_market_skills/market_data/ohlcv.py`
+- `src/finance_market_skills/market_data/orderbook.py`
+- `src/finance_market_skills/market_data/trades.py`
+- `src/finance_market_skills/indicators/moving_averages.py`
+- `src/finance_market_skills/indicators/rsi.py`
+- `src/finance_market_skills/indicators/macd.py`
+- `src/finance_market_skills/indicators/bbands.py`
+- `src/finance_market_skills/indicators/atr.py`
+- `src/finance_market_skills/indicators/vwap.py`
+- `src/finance_market_skills/indicators/compute.py`
+- `src/finance_market_skills/scanners/top_movers.py`
+- `src/finance_market_skills/scanners/volume_spikes.py`
+- `src/finance_market_skills/scanners/volatility_rank.py`
+- `src/finance_market_skills/scanners/breakouts.py`
 - `tests/test_response_schema.py`
 - `tests/test_indicators_rsi.py`
 - `tests/test_indicators_macd.py`
@@ -48,7 +48,7 @@
 
 **Files:**
 - Create: `/workspace/pyproject.toml`
-- Create: `/workspace/src/crypto_market_toolkit/__init__.py`
+- Create: `/workspace/src/finance_market_skills/__init__.py`
 
 - [ ] **Step 1: Create `pyproject.toml`**
 
@@ -58,7 +58,7 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "crypto-market-toolkit"
+name = "finance-market-skills"
 version = "0.1.0"
 description = "AI-agent friendly crypto market data + indicators toolkit using ccxt"
 requires-python = ">=3.11"
@@ -114,13 +114,13 @@ Expected: installs `ccxt` and `pytest` without errors.
 ### Task 2: Implement response envelope + helpers
 
 **Files:**
-- Create: `/workspace/src/crypto_market_toolkit/schemas/response.py`
+- Create: `/workspace/src/finance_market_skills/schemas/response.py`
 - Create: `/workspace/tests/test_response_schema.py`
 
 - [ ] **Step 1: Write failing test for envelope fields**
 
 ```python
-from crypto_market_toolkit.schemas.response import ok_response, error_response
+from finance_market_skills.schemas.response import ok_response, error_response
 
 
 def test_ok_response_has_required_fields():
@@ -162,7 +162,7 @@ Run:
 pytest -q
 ```
 
-Expected: FAIL because `crypto_market_toolkit.schemas.response` does not exist.
+Expected: FAIL because `finance_market_skills.schemas.response` does not exist.
 
 - [ ] **Step 3: Implement `ok_response` / `error_response`**
 
@@ -245,7 +245,7 @@ Expected: PASS for `test_response_schema.py`.
 ### Task 3: Add TTL in-memory cache
 
 **Files:**
-- Create: `/workspace/src/crypto_market_toolkit/cache/memory_cache.py`
+- Create: `/workspace/src/finance_market_skills/cache/memory_cache.py`
 
 - [ ] **Step 1: Implement `MemoryTTLCache`**
 
@@ -298,8 +298,8 @@ class MemoryTTLCache:
 ### Task 4: Exchange registry + client wrapper (rate limit, timeout, retry, symbol normalize)
 
 **Files:**
-- Create: `/workspace/src/crypto_market_toolkit/exchanges/registry.py`
-- Create: `/workspace/src/crypto_market_toolkit/exchanges/client.py`
+- Create: `/workspace/src/finance_market_skills/exchanges/registry.py`
+- Create: `/workspace/src/finance_market_skills/exchanges/client.py`
 - Create: `/workspace/tests/test_symbol_normalization.py`
 
 - [ ] **Step 1: Add exchange registry**
@@ -339,7 +339,7 @@ def create_exchange(exchange: str, *, market_type: str = "spot", timeout_ms: int
 - [ ] **Step 2: Add normalization helper test**
 
 ```python
-from crypto_market_toolkit.exchanges.client import normalize_symbol
+from finance_market_skills.exchanges.client import normalize_symbol
 
 
 def test_normalize_symbol_passthrough():
@@ -360,8 +360,8 @@ from __future__ import annotations
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
-from crypto_market_toolkit.cache.memory_cache import MemoryTTLCache
-from crypto_market_toolkit.exchanges.registry import create_exchange
+from finance_market_skills.cache.memory_cache import MemoryTTLCache
+from finance_market_skills.exchanges.registry import create_exchange
 
 
 DEFAULT_QUOTE_WHITELIST = ["USDT", "USDC", "BTC", "ETH"]
@@ -445,24 +445,24 @@ Expected: PASS (offline tests only).
 ### Task 5: Implement market data tools (price/ticker/ohlcv/orderbook/trades)
 
 **Files:**
-- Create: `/workspace/src/crypto_market_toolkit/market_data/price.py`
-- Create: `/workspace/src/crypto_market_toolkit/market_data/ticker.py`
-- Create: `/workspace/src/crypto_market_toolkit/market_data/ohlcv.py`
-- Create: `/workspace/src/crypto_market_toolkit/market_data/orderbook.py`
-- Create: `/workspace/src/crypto_market_toolkit/market_data/trades.py`
-- Modify: `/workspace/src/crypto_market_toolkit/__init__.py` (wire exports)
+- Create: `/workspace/src/finance_market_skills/market_data/price.py`
+- Create: `/workspace/src/finance_market_skills/market_data/ticker.py`
+- Create: `/workspace/src/finance_market_skills/market_data/ohlcv.py`
+- Create: `/workspace/src/finance_market_skills/market_data/orderbook.py`
+- Create: `/workspace/src/finance_market_skills/market_data/trades.py`
+- Modify: `/workspace/src/finance_market_skills/__init__.py` (wire exports)
 
 - [ ] **Step 1: Implement `get_ticker` (core pattern)**
 
-Create: `/workspace/src/crypto_market_toolkit/market_data/ticker.py`
+Create: `/workspace/src/finance_market_skills/market_data/ticker.py`
 
 ```python
 from __future__ import annotations
 
 from typing import Any, Dict, Optional
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient, normalize_symbol
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient, normalize_symbol
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def get_ticker(
@@ -560,15 +560,15 @@ def get_ticker(
 
 - [ ] **Step 2: Create `get_price`**
 
-Create: `/workspace/src/crypto_market_toolkit/market_data/price.py`
+Create: `/workspace/src/finance_market_skills/market_data/price.py`
 
 ```python
 from __future__ import annotations
 
 from typing import Any, Dict
 
-from crypto_market_toolkit.market_data.ticker import get_ticker
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.market_data.ticker import get_ticker
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def get_price(
@@ -602,7 +602,7 @@ def get_price(
 
 - [ ] **Step 3: Create `get_ohlcv`**
 
-Create: `/workspace/src/crypto_market_toolkit/market_data/ohlcv.py`
+Create: `/workspace/src/finance_market_skills/market_data/ohlcv.py`
 
 ```python
 from __future__ import annotations
@@ -611,8 +611,8 @@ import math
 import statistics
 from typing import Any, Dict, List, Optional, Tuple
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient, normalize_symbol
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient, normalize_symbol
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def _tail(arr: List[Any], n: int) -> List[Any]:
@@ -746,15 +746,15 @@ def get_ohlcv(
 
 - [ ] **Step 4: Create `get_orderbook`**
 
-Create: `/workspace/src/crypto_market_toolkit/market_data/orderbook.py`
+Create: `/workspace/src/finance_market_skills/market_data/orderbook.py`
 
 ```python
 from __future__ import annotations
 
 from typing import Any, Dict
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient, normalize_symbol
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient, normalize_symbol
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def _depth_notional(levels, max_levels: int = 50) -> float:
@@ -845,15 +845,15 @@ def get_orderbook(
 
 - [ ] **Step 5: Create `get_trades`**
 
-Create: `/workspace/src/crypto_market_toolkit/market_data/trades.py`
+Create: `/workspace/src/finance_market_skills/market_data/trades.py`
 
 ```python
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient, normalize_symbol
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient, normalize_symbol
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def get_trades(
@@ -936,16 +936,16 @@ def get_trades(
 - [ ] **Step 3: Update `__init__.py` to re-export tool functions**
 
 ```python
-from crypto_market_toolkit.market_data.price import get_price
-from crypto_market_toolkit.market_data.ticker import get_ticker
-from crypto_market_toolkit.market_data.ohlcv import get_ohlcv
-from crypto_market_toolkit.market_data.orderbook import get_orderbook
-from crypto_market_toolkit.market_data.trades import get_trades
-from crypto_market_toolkit.indicators.compute import compute_indicators
-from crypto_market_toolkit.scanners.top_movers import scan_top_movers
-from crypto_market_toolkit.scanners.volume_spikes import scan_volume_spikes
-from crypto_market_toolkit.scanners.volatility_rank import scan_volatility_rank
-from crypto_market_toolkit.scanners.breakouts import scan_breakouts
+from finance_market_skills.market_data.price import get_price
+from finance_market_skills.market_data.ticker import get_ticker
+from finance_market_skills.market_data.ohlcv import get_ohlcv
+from finance_market_skills.market_data.orderbook import get_orderbook
+from finance_market_skills.market_data.trades import get_trades
+from finance_market_skills.indicators.compute import compute_indicators
+from finance_market_skills.scanners.top_movers import scan_top_movers
+from finance_market_skills.scanners.volume_spikes import scan_volume_spikes
+from finance_market_skills.scanners.volatility_rank import scan_volatility_rank
+from finance_market_skills.scanners.breakouts import scan_breakouts
 ```
 
 - [ ] **Step 4: Run lint-free smoke import**
@@ -953,7 +953,7 @@ from crypto_market_toolkit.scanners.breakouts import scan_breakouts
 Run:
 
 ```bash
-python -c "import crypto_market_toolkit as c; print(sorted(c.__all__))"
+python -c "import finance_market_skills as c; print(sorted(c.__all__))"
 ```
 
 Expected: prints exported tool names.
@@ -963,7 +963,7 @@ Expected: prints exported tool names.
 ### Task 6: Implement indicator math with unit tests (offline)
 
 **Files:**
-- Create: `/workspace/src/crypto_market_toolkit/indicators/*`
+- Create: `/workspace/src/finance_market_skills/indicators/*`
 - Create: `/workspace/tests/test_indicators_*.py`
 
 - [ ] **Step 1: Create moving averages helpers (SMA/EMA)**
@@ -1004,11 +1004,11 @@ def ema_series(values: List[float], period: int) -> List[Optional[float]]:
     return out
 ```
 
-Create: `/workspace/src/crypto_market_toolkit/indicators/moving_averages.py` with the code above.
+Create: `/workspace/src/finance_market_skills/indicators/moving_averages.py` with the code above.
 
 - [ ] **Step 2: Create RSI + unit test**
 
-Create: `/workspace/src/crypto_market_toolkit/indicators/rsi.py`
+Create: `/workspace/src/finance_market_skills/indicators/rsi.py`
 
 ```python
 from __future__ import annotations
@@ -1050,7 +1050,7 @@ def rsi_series(closes: List[float], period: int = 14) -> List[Optional[float]]:
 Create: `/workspace/tests/test_indicators_rsi.py`
 
 ```python
-from crypto_market_toolkit.indicators.rsi import rsi_series
+from finance_market_skills.indicators.rsi import rsi_series
 
 
 def test_rsi_series_length_matches_input():
@@ -1064,14 +1064,14 @@ def test_rsi_series_length_matches_input():
 
 - [ ] **Step 3: Create MACD + unit test**
 
-Create: `/workspace/src/crypto_market_toolkit/indicators/macd.py`
+Create: `/workspace/src/finance_market_skills/indicators/macd.py`
 
 ```python
 from __future__ import annotations
 
 from typing import List, Optional, Tuple
 
-from crypto_market_toolkit.indicators.moving_averages import ema_series
+from finance_market_skills.indicators.moving_averages import ema_series
 
 
 def macd_series(
@@ -1098,7 +1098,7 @@ def macd_series(
 Create: `/workspace/tests/test_indicators_macd.py`
 
 ```python
-from crypto_market_toolkit.indicators.macd import macd_series
+from finance_market_skills.indicators.macd import macd_series
 
 
 def test_macd_shapes():
@@ -1109,7 +1109,7 @@ def test_macd_shapes():
 
 - [ ] **Step 4: Create Bollinger Bands + unit test**
 
-Create: `/workspace/src/crypto_market_toolkit/indicators/bbands.py`
+Create: `/workspace/src/finance_market_skills/indicators/bbands.py`
 
 ```python
 from __future__ import annotations
@@ -1142,7 +1142,7 @@ def bbands_series(
 Create: `/workspace/tests/test_indicators_bbands.py`
 
 ```python
-from crypto_market_toolkit.indicators.bbands import bbands_series
+from finance_market_skills.indicators.bbands import bbands_series
 
 
 def test_bbands_length():
@@ -1153,7 +1153,7 @@ def test_bbands_length():
 
 - [ ] **Step 5: Create ATR + unit test**
 
-Create: `/workspace/src/crypto_market_toolkit/indicators/atr.py`
+Create: `/workspace/src/finance_market_skills/indicators/atr.py`
 
 ```python
 from __future__ import annotations
@@ -1191,7 +1191,7 @@ def atr_series(highs: List[float], lows: List[float], closes: List[float], perio
 Create: `/workspace/tests/test_indicators_atr.py`
 
 ```python
-from crypto_market_toolkit.indicators.atr import atr_series
+from finance_market_skills.indicators.atr import atr_series
 
 
 def test_atr_length():
@@ -1204,7 +1204,7 @@ def test_atr_length():
 
 - [ ] **Step 6: Create VWAP + unit test**
 
-Create: `/workspace/src/crypto_market_toolkit/indicators/vwap.py`
+Create: `/workspace/src/finance_market_skills/indicators/vwap.py`
 
 ```python
 from __future__ import annotations
@@ -1249,7 +1249,7 @@ def vwap_series(
 Create: `/workspace/tests/test_indicators_vwap.py`
 
 ```python
-from crypto_market_toolkit.indicators.vwap import vwap_series
+from finance_market_skills.indicators.vwap import vwap_series
 
 
 def test_vwap_length():
@@ -1276,7 +1276,7 @@ Expected: PASS (no network).
 ### Task 7: Implement `compute_indicators` orchestration (tool)
 
 **Files:**
-- Create: `/workspace/src/crypto_market_toolkit/indicators/compute.py`
+- Create: `/workspace/src/finance_market_skills/indicators/compute.py`
 
 - [ ] **Step 1: Implement `compute_indicators`**
 
@@ -1285,14 +1285,14 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from crypto_market_toolkit.indicators.atr import atr_series
-from crypto_market_toolkit.indicators.bbands import bbands_series
-from crypto_market_toolkit.indicators.macd import macd_series
-from crypto_market_toolkit.indicators.moving_averages import ema_series, sma_series
-from crypto_market_toolkit.indicators.rsi import rsi_series
-from crypto_market_toolkit.indicators.vwap import vwap_series
-from crypto_market_toolkit.market_data.ohlcv import get_ohlcv
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.indicators.atr import atr_series
+from finance_market_skills.indicators.bbands import bbands_series
+from finance_market_skills.indicators.macd import macd_series
+from finance_market_skills.indicators.moving_averages import ema_series, sma_series
+from finance_market_skills.indicators.rsi import rsi_series
+from finance_market_skills.indicators.vwap import vwap_series
+from finance_market_skills.market_data.ohlcv import get_ohlcv
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def _signal_rsi(last: Optional[float]) -> Optional[str]:
@@ -1467,7 +1467,7 @@ def compute_indicators(
 Run:
 
 ```bash
-python -c "from crypto_market_toolkit import compute_indicators; print(compute_indicators('binance','BTC/USDT',timeframe='1h',limit=200,indicators=['rsi','macd','bbands'])['ok'])"
+python -c "from finance_market_skills import compute_indicators; print(compute_indicators('binance','BTC/USDT',timeframe='1h',limit=200,indicators=['rsi','macd','bbands'])['ok'])"
 ```
 
 Expected: `True` if network allowed; if not, expect `ok=False` with `UPSTREAM_ERROR`.
@@ -1477,10 +1477,10 @@ Expected: `True` if network allowed; if not, expect `ok=False` with `UPSTREAM_ER
 ### Task 8: Implement scanners (top movers, spikes, volatility, breakouts)
 
 **Files:**
-- Create: `/workspace/src/crypto_market_toolkit/scanners/top_movers.py`
-- Create: `/workspace/src/crypto_market_toolkit/scanners/volume_spikes.py`
-- Create: `/workspace/src/crypto_market_toolkit/scanners/volatility_rank.py`
-- Create: `/workspace/src/crypto_market_toolkit/scanners/breakouts.py`
+- Create: `/workspace/src/finance_market_skills/scanners/top_movers.py`
+- Create: `/workspace/src/finance_market_skills/scanners/volume_spikes.py`
+- Create: `/workspace/src/finance_market_skills/scanners/volatility_rank.py`
+- Create: `/workspace/src/finance_market_skills/scanners/breakouts.py`
 
 - [ ] **Step 1: Implement `scan_top_movers`**
 
@@ -1489,8 +1489,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def scan_top_movers(
@@ -1559,7 +1559,7 @@ def scan_top_movers(
         )
 ```
 
-Create: `/workspace/src/crypto_market_toolkit/scanners/top_movers.py` with the code above.
+Create: `/workspace/src/finance_market_skills/scanners/top_movers.py` with the code above.
 
 - [ ] **Step 2: Implement `scan_volume_spikes`**
 
@@ -1568,9 +1568,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient
-from crypto_market_toolkit.market_data.ohlcv import get_ohlcv
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient
+from finance_market_skills.market_data.ohlcv import get_ohlcv
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def scan_volume_spikes(
@@ -1655,7 +1655,7 @@ def scan_volume_spikes(
         )
 ```
 
-Create: `/workspace/src/crypto_market_toolkit/scanners/volume_spikes.py` with the code above.
+Create: `/workspace/src/finance_market_skills/scanners/volume_spikes.py` with the code above.
 
 - [ ] **Step 3: Implement `scan_volatility_rank`**
 
@@ -1666,9 +1666,9 @@ import math
 import statistics
 from typing import Any, Dict, List
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient
-from crypto_market_toolkit.market_data.ohlcv import get_ohlcv
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient
+from finance_market_skills.market_data.ohlcv import get_ohlcv
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def scan_volatility_rank(
@@ -1747,7 +1747,7 @@ def scan_volatility_rank(
         )
 ```
 
-Create: `/workspace/src/crypto_market_toolkit/scanners/volatility_rank.py` with the code above.
+Create: `/workspace/src/finance_market_skills/scanners/volatility_rank.py` with the code above.
 
 - [ ] **Step 4: Implement `scan_breakouts`**
 
@@ -1756,9 +1756,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from crypto_market_toolkit.exchanges.client import ExchangeClient
-from crypto_market_toolkit.indicators.compute import compute_indicators
-from crypto_market_toolkit.schemas.response import error_response, ok_response
+from finance_market_skills.exchanges.client import ExchangeClient
+from finance_market_skills.indicators.compute import compute_indicators
+from finance_market_skills.schemas.response import error_response, ok_response
 
 
 def _eval_rule(rule: str, *, close: float, indicators: Dict[str, Any]) -> Tuple[bool, str]:
@@ -1861,7 +1861,7 @@ def scan_breakouts(
         )
 ```
 
-Create: `/workspace/src/crypto_market_toolkit/scanners/breakouts.py` with the code above.
+Create: `/workspace/src/finance_market_skills/scanners/breakouts.py` with the code above.
 
 def test_rsi_series_length_matches_input():
     closes = [1, 2, 3, 2, 2, 4, 3, 5, 6, 7, 6, 6, 7, 8, 9, 10]
@@ -1873,7 +1873,7 @@ def test_rsi_series_length_matches_input():
 - [ ] **Step 2: MACD implementation + test**
 
 ```python
-from crypto_market_toolkit.indicators.macd import macd_series
+from finance_market_skills.indicators.macd import macd_series
 
 
 def test_macd_shapes():
@@ -1885,9 +1885,9 @@ def test_macd_shapes():
 - [ ] **Step 3: BBands/ATR/VWAP tests**
 
 ```python
-from crypto_market_toolkit.indicators.bbands import bbands_series
-from crypto_market_toolkit.indicators.atr import atr_series
-from crypto_market_toolkit.indicators.vwap import vwap_series
+from finance_market_skills.indicators.bbands import bbands_series
+from finance_market_skills.indicators.atr import atr_series
+from finance_market_skills.indicators.vwap import vwap_series
 
 
 def test_bbands_length():
@@ -1935,7 +1935,7 @@ Expected: PASS (no network).
 Include examples:
 
 ```python
-from crypto_market_toolkit import get_ticker, compute_indicators, scan_top_movers
+from finance_market_skills import get_ticker, compute_indicators, scan_top_movers
 
 print(get_ticker("binance", "BTC/USDT")["summary"])
 print(compute_indicators("binance", "BTC/USDT", timeframe="1h", indicators=["rsi", "macd"])["highlights"])
@@ -1952,7 +1952,7 @@ print(scan_top_movers("binance")["data"]["results"][:3])
 
 ## Execution handoff
 
-Plan complete and saved to `/workspace/docs/superpowers/plans/2026-07-03-crypto-market-toolkit.md`. Two execution options:
+Plan complete and saved to `/workspace/docs/superpowers/plans/2026-07-03-finance-market-skills.md`. Two execution options:
 
 1. Subagent-Driven (recommended) — I dispatch a fresh subagent per task, review between tasks
 2. Inline Execution — execute tasks in this session using executing-plans, with checkpoints

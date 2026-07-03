@@ -2,7 +2,7 @@
 
 ## Mục tiêu
 
-Điều chỉnh cấu trúc project để agent chỉ cần đọc `SKILL.md` ở root project là có thể nhận diện và sử dụng skill `crypto-market-toolkit`.
+Điều chỉnh cấu trúc project để agent chỉ cần đọc `SKILL.md` ở root project là có thể nhận diện và sử dụng skill `finance-market-skills`.
 
 ## Quyết định thiết kế
 
@@ -12,7 +12,7 @@ Chọn phương án A:
 - Đưa metadata agent lên root-level assets:
   - `/workspace/agents/openai.yaml`
   - `/workspace/scripts/run-tool.sh`
-- Giữ nguyên package Python hiện tại trong `src/crypto_market_toolkit/`
+- Giữ nguyên package Python hiện tại trong `src/finance_market_skills/`
 - Cập nhật toàn bộ tài liệu và đường dẫn wrapper sang layout mới ở root
 
 ## Kiến trúc sau thay đổi
@@ -31,8 +31,8 @@ Root project sẽ có:
 
 Phần thực thi vẫn giữ nguyên:
 
-- console script `crypto-market-toolkit`
-- module entrypoint `python -m crypto_market_toolkit.cli`
+- console script `finance-market-skills`
+- module entrypoint `python -m finance_market_skills.cli`
 
 Wrapper `scripts/run-tool.sh` chỉ có vai trò export `PYTHONPATH` và gọi CLI.
 
@@ -47,18 +47,18 @@ Wrapper `scripts/run-tool.sh` chỉ có vai trò export `PYTHONPATH` và gọi C
 
 ### File cũ cần ngừng dùng
 
-Các file dưới `skills/crypto-market-toolkit/` không còn là entrypoint chính sau thay đổi này.
+Các file dưới `skills/finance-market-skills/` không còn là entrypoint chính sau thay đổi này.
 
 Để tránh hai nguồn sự thật, triển khai nên chọn một trong hai:
 
-- xóa thư mục `skills/crypto-market-toolkit/`
+- xóa thư mục `skills/finance-market-skills/`
 - hoặc giữ tạm nhưng ghi rõ deprecated và không còn được tham chiếu ở README
 
 Khuyến nghị: xóa sau khi root layout đã chạy ổn.
 
 ## Error handling
 
-- Nếu user chạy wrapper cũ trong `skills/crypto-market-toolkit/scripts/run-tool.sh`, tài liệu không còn tham chiếu tới path này
+- Nếu user chạy wrapper cũ trong `skills/finance-market-skills/scripts/run-tool.sh`, tài liệu không còn tham chiếu tới path này
 - Wrapper mới ở root phải tiếp tục hoạt động trong môi trường local repo mà không cần thay đổi code package
 
 ## Kiểm thử
@@ -67,12 +67,12 @@ Sau khi đổi cấu trúc cần xác minh:
 
 - `pytest`
 - `python -m compileall src tests`
-- `crypto-market-toolkit --help`
+- `finance-market-skills --help`
 - `./scripts/run-tool.sh --help`
 
 ## Tiêu chí hoàn thành
 
 - Agent discovery dựa trên `/workspace/SKILL.md`
-- Không còn tài liệu chính nào trỏ về `skills/crypto-market-toolkit/`
+- Không còn tài liệu chính nào trỏ về `skills/finance-market-skills/`
 - Root wrapper và CLI đều chạy được
 - Không tạo thêm logic runtime mới ngoài việc đổi layout và path

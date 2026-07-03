@@ -1,4 +1,4 @@
-# Crypto Market Toolkit (ccxt) — Design Spec
+# Finance Market (ccxt) — Design Spec
 
 ## 1) Mục tiêu
 

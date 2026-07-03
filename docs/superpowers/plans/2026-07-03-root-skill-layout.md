@@ -4,7 +4,7 @@
 
 **Goal:** Move the skill discovery entrypoint to `/workspace/SKILL.md` and normalize all skill assets to root-level paths without changing the crypto toolkit runtime behavior.
 
-**Architecture:** Keep the Python package and CLI unchanged, but move the skill discovery and wrapper assets to root-level files: `SKILL.md`, `agents/openai.yaml`, and `scripts/run-tool.sh`. Remove or deprecate the nested `skills/crypto-market-toolkit/` layout so the repo has one canonical skill entrypoint.
+**Architecture:** Keep the Python package and CLI unchanged, but move the skill discovery and wrapper assets to root-level files: `SKILL.md`, `agents/openai.yaml`, and `scripts/run-tool.sh`. Remove or deprecate the nested `skills/finance-market-skills/` layout so the repo has one canonical skill entrypoint.
 
 **Tech Stack:** Markdown, YAML, Bash, Python packaging, pytest
 
@@ -16,14 +16,14 @@
 - `/workspace/agents/openai.yaml`
 - `/workspace/scripts/run-tool.sh`
 - `/workspace/README.md`
-- `/workspace/src/crypto_market_toolkit/` (unchanged runtime)
+- `/workspace/src/finance_market_skills/` (unchanged runtime)
 - `/workspace/tests/test_cli.py` (unchanged unless wrapper path coverage is added)
 
 Deprecated or removed:
 
-- `/workspace/skills/crypto-market-toolkit/SKILL.md`
-- `/workspace/skills/crypto-market-toolkit/agents/openai.yaml`
-- `/workspace/skills/crypto-market-toolkit/scripts/run-tool.sh`
+- `/workspace/skills/finance-market-skills/SKILL.md`
+- `/workspace/skills/finance-market-skills/agents/openai.yaml`
+- `/workspace/skills/finance-market-skills/scripts/run-tool.sh`
 
 ---
 
@@ -39,14 +39,14 @@ Create `/workspace/SKILL.md` with this content:
 
 ```md
 ---
-name: crypto-market-toolkit
+name: finance-market-skills
 description: "Use when the user asks for crypto token prices, ticker data, OHLCV candles, order books, trades, technical indicators, or market scans powered by ccxt."
-allowed-tools: Bash(crypto-market-toolkit:*), Bash(python -m crypto_market_toolkit.cli:*), Bash(./scripts/run-tool.sh:*)
+allowed-tools: Bash(finance-market-skills:*), Bash(python -m finance_market_skills.cli:*), Bash(./scripts/run-tool.sh:*)
 ---
 
-# Crypto Market Toolkit
+# Finance Market
 
-Use this Skill when you need a strong finance toolset for crypto market data. It wraps the local `crypto_market_toolkit` package and returns structured JSON that is friendly for AI agents:
+Use this Skill when you need a strong finance toolset for crypto market data. It wraps the local `finance_market_skills` package and returns structured JSON that is friendly for AI agents:
 
 - `ok`, `summary`, `highlights`
 - `query`, `data`, `stats`, `meta`
@@ -81,13 +81,13 @@ python -m pip install -e ".[dev]"
 You can then call either:
 
 ```bash
-crypto-market-toolkit --help
+finance-market-skills --help
 ```
 
 or:
 
 ```bash
-python -m crypto_market_toolkit.cli --help
+python -m finance_market_skills.cli --help
 ```
 
 or the repo-local wrapper:
@@ -101,22 +101,22 @@ or the repo-local wrapper:
 ### Price / Ticker
 
 ```bash
-crypto-market-toolkit get-price --exchange binance --symbol BTC/USDT --pretty
-crypto-market-toolkit get-ticker --exchange bybit --symbol ETH/USDT --market-type spot --pretty
+finance-market-skills get-price --exchange binance --symbol BTC/USDT --pretty
+finance-market-skills get-ticker --exchange bybit --symbol ETH/USDT --market-type spot --pretty
 ```
 
 ### OHLCV / Order Book / Trades
 
 ```bash
-crypto-market-toolkit get-ohlcv --exchange binance --symbol BTC/USDT --timeframe 1h --limit 200 --series-tail-size 120 --pretty
-crypto-market-toolkit get-orderbook --exchange okx --symbol SOL/USDT --limit 50 --pretty
-crypto-market-toolkit get-trades --exchange bybit --symbol BTC/USDT --limit 100 --pretty
+finance-market-skills get-ohlcv --exchange binance --symbol BTC/USDT --timeframe 1h --limit 200 --series-tail-size 120 --pretty
+finance-market-skills get-orderbook --exchange okx --symbol SOL/USDT --limit 50 --pretty
+finance-market-skills get-trades --exchange bybit --symbol BTC/USDT --limit 100 --pretty
 ```
 
 ### Indicators
 
 ```bash
-crypto-market-toolkit compute-indicators \
+finance-market-skills compute-indicators \
   --exchange binance \
   --symbol BTC/USDT \
   --timeframe 1h \
@@ -128,10 +128,10 @@ crypto-market-toolkit compute-indicators \
 ### Scanners
 
 ```bash
-crypto-market-toolkit scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
-crypto-market-toolkit scan-volume-spikes --exchange binance --quote USDT --timeframe 1h --lookback 48 --spike-factor 3 --pretty
-crypto-market-toolkit scan-volatility-rank --exchange okx --quote USDT --timeframe 4h --top-n 10 --pretty
-crypto-market-toolkit scan-breakouts --exchange bybit --quote USDT --timeframe 1h --rule close>bb_upper --pretty
+finance-market-skills scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
+finance-market-skills scan-volume-spikes --exchange binance --quote USDT --timeframe 1h --lookback 48 --spike-factor 3 --pretty
+finance-market-skills scan-volatility-rank --exchange okx --quote USDT --timeframe 4h --top-n 10 --pretty
+finance-market-skills scan-breakouts --exchange bybit --quote USDT --timeframe 1h --rule close>bb_upper --pretty
 ```
 
 ## Recommended Agent Workflow
@@ -192,12 +192,12 @@ In `/workspace/README.md`, replace the section:
 ```md
 ## Skill Folder
 
-The repo now includes a ready-to-use Skill at [SKILL.md](file:///workspace/skills/crypto-market-toolkit/SKILL.md) with companion metadata at [openai.yaml](file:///workspace/skills/crypto-market-toolkit/agents/openai.yaml).
+The repo now includes a ready-to-use Skill at [SKILL.md](file:///workspace/skills/finance-market-skills/SKILL.md) with companion metadata at [openai.yaml](file:///workspace/skills/finance-market-skills/agents/openai.yaml).
 
 Local wrapper:
 
 ```bash
-./skills/crypto-market-toolkit/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
+./skills/finance-market-skills/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
 ```
 ```
 
@@ -239,9 +239,9 @@ Create `/workspace/agents/openai.yaml` with:
 
 ```yaml
 interface:
-  display_name: "Crypto Market Toolkit"
+  display_name: "Finance Market"
   short_description: "Get token prices, indicators, and crypto market scans with ccxt"
-  default_prompt: "Use $crypto-market-toolkit to fetch crypto market data, calculate technical indicators, and run market scans with structured JSON output."
+  default_prompt: "Use $finance-market-skills to fetch crypto market data, calculate technical indicators, and run market scans with structured JSON output."
 ```
 
 - [ ] **Step 2: Create root wrapper script**
@@ -255,7 +255,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PYTHONPATH="${ROOT_DIR}/src${PYTHONPATH:+:${PYTHONPATH}}"
 
-exec python -m crypto_market_toolkit.cli "$@"
+exec python -m finance_market_skills.cli "$@"
 ```
 
 - [ ] **Step 3: Make the wrapper executable**
@@ -283,18 +283,18 @@ Expected: prints `ok`
 ### Task 3: Remove duplicate nested skill source of truth
 
 **Files:**
-- Delete: `/workspace/skills/crypto-market-toolkit/SKILL.md`
-- Delete: `/workspace/skills/crypto-market-toolkit/agents/openai.yaml`
-- Delete: `/workspace/skills/crypto-market-toolkit/scripts/run-tool.sh`
+- Delete: `/workspace/skills/finance-market-skills/SKILL.md`
+- Delete: `/workspace/skills/finance-market-skills/agents/openai.yaml`
+- Delete: `/workspace/skills/finance-market-skills/scripts/run-tool.sh`
 
 - [ ] **Step 1: Delete the nested skill files**
 
 Run:
 
 ```bash
-rm -f /workspace/skills/crypto-market-toolkit/SKILL.md
-rm -f /workspace/skills/crypto-market-toolkit/agents/openai.yaml
-rm -f /workspace/skills/crypto-market-toolkit/scripts/run-tool.sh
+rm -f /workspace/skills/finance-market-skills/SKILL.md
+rm -f /workspace/skills/finance-market-skills/agents/openai.yaml
+rm -f /workspace/skills/finance-market-skills/scripts/run-tool.sh
 ```
 
 Expected: commands succeed with no output.
@@ -304,9 +304,9 @@ Expected: commands succeed with no output.
 Run:
 
 ```bash
-test ! -f /workspace/skills/crypto-market-toolkit/SKILL.md && \
-test ! -f /workspace/skills/crypto-market-toolkit/agents/openai.yaml && \
-test ! -f /workspace/skills/crypto-market-toolkit/scripts/run-tool.sh && echo ok
+test ! -f /workspace/skills/finance-market-skills/SKILL.md && \
+test ! -f /workspace/skills/finance-market-skills/agents/openai.yaml && \
+test ! -f /workspace/skills/finance-market-skills/scripts/run-tool.sh && echo ok
 ```
 
 Expected: prints `ok`
@@ -346,7 +346,7 @@ Expected: completes without syntax errors.
 Run:
 
 ```bash
-crypto-market-toolkit --help >/tmp/root-cli-help.txt && test -s /tmp/root-cli-help.txt && echo ok
+finance-market-skills --help >/tmp/root-cli-help.txt && test -s /tmp/root-cli-help.txt && echo ok
 ```
 
 Expected: prints `ok`
@@ -356,7 +356,7 @@ Expected: prints `ok`
 Run:
 
 ```bash
-! grep -n "skills/crypto-market-toolkit" /workspace/README.md && echo ok
+! grep -n "skills/finance-market-skills" /workspace/README.md && echo ok
 ```
 
 Expected: prints `ok`
