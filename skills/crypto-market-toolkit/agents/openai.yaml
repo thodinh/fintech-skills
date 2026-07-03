@@ -1,0 +1,4 @@
+interface:
+  display_name: "Crypto Market Toolkit"
+  short_description: "Get token prices, indicators, and crypto market scans with ccxt"
+  default_prompt: "Use $crypto-market-toolkit to fetch crypto market data, calculate technical indicators, and run market scans with structured JSON output."
