@@ -47,11 +47,18 @@ def _base_parser(description: str) -> argparse.ArgumentParser:
     return parser
 
 
+def _add_shared_output_flags(parser: argparse.ArgumentParser) -> None:
+    # Support `--pretty` both before and after the subcommand because agents
+    # often append formatting flags at the end of the command.
+    parser.add_argument("--pretty", action="store_true", help=argparse.SUPPRESS)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = _base_parser("Finance market skills CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     price = subparsers.add_parser("get-price", help="Get last price for a symbol")
+    _add_shared_output_flags(price)
     price.add_argument("--exchange", required=True)
     price.add_argument("--symbol", required=True)
     price.add_argument("--market-type", default="spot")
@@ -59,6 +66,7 @@ def build_parser() -> argparse.ArgumentParser:
     price.add_argument("--timeout-ms", type=int, default=15000)
 
     ticker = subparsers.add_parser("get-ticker", help="Get ticker snapshot for a symbol")
+    _add_shared_output_flags(ticker)
     ticker.add_argument("--exchange", required=True)
     ticker.add_argument("--symbol", required=True)
     ticker.add_argument("--market-type", default="spot")
@@ -66,6 +74,7 @@ def build_parser() -> argparse.ArgumentParser:
     ticker.add_argument("--timeout-ms", type=int, default=15000)
 
     ohlcv = subparsers.add_parser("get-ohlcv", help="Get OHLCV candles")
+    _add_shared_output_flags(ohlcv)
     ohlcv.add_argument("--exchange", required=True)
     ohlcv.add_argument("--symbol", required=True)
     ohlcv.add_argument("--timeframe", default="1m")
@@ -78,6 +87,7 @@ def build_parser() -> argparse.ArgumentParser:
     ohlcv.add_argument("--timeout-ms", type=int, default=15000)
 
     orderbook = subparsers.add_parser("get-orderbook", help="Get order book snapshot")
+    _add_shared_output_flags(orderbook)
     orderbook.add_argument("--exchange", required=True)
     orderbook.add_argument("--symbol", required=True)
     orderbook.add_argument("--limit", type=int, default=100)
@@ -86,6 +96,7 @@ def build_parser() -> argparse.ArgumentParser:
     orderbook.add_argument("--timeout-ms", type=int, default=15000)
 
     trades = subparsers.add_parser("get-trades", help="Get recent trades")
+    _add_shared_output_flags(trades)
     trades.add_argument("--exchange", required=True)
     trades.add_argument("--symbol", required=True)
     trades.add_argument("--limit", type=int, default=200)
@@ -95,6 +106,7 @@ def build_parser() -> argparse.ArgumentParser:
     trades.add_argument("--timeout-ms", type=int, default=15000)
 
     indicators = subparsers.add_parser("compute-indicators", help="Compute indicators from OHLCV")
+    _add_shared_output_flags(indicators)
     indicators.add_argument("--exchange", required=True)
     indicators.add_argument("--symbol", required=True)
     indicators.add_argument("--timeframe", default="1h")
@@ -108,6 +120,7 @@ def build_parser() -> argparse.ArgumentParser:
     indicators.add_argument("--timeout-ms", type=int, default=15000)
 
     movers = subparsers.add_parser("scan-top-movers", help="Scan top movers")
+    _add_shared_output_flags(movers)
     movers.add_argument("--exchange", required=True)
     movers.add_argument("--quote", default="USDT")
     movers.add_argument("--market-type", default="spot")
@@ -116,6 +129,7 @@ def build_parser() -> argparse.ArgumentParser:
     movers.add_argument("--timeout-ms", type=int, default=15000)
 
     spikes = subparsers.add_parser("scan-volume-spikes", help="Scan volume spikes")
+    _add_shared_output_flags(spikes)
     spikes.add_argument("--exchange", required=True)
     spikes.add_argument("--quote", default="USDT")
     spikes.add_argument("--timeframe", default="1h")
@@ -127,6 +141,7 @@ def build_parser() -> argparse.ArgumentParser:
     spikes.add_argument("--timeout-ms", type=int, default=15000)
 
     vol = subparsers.add_parser("scan-volatility-rank", help="Scan symbols by volatility")
+    _add_shared_output_flags(vol)
     vol.add_argument("--exchange", required=True)
     vol.add_argument("--quote", default="USDT")
     vol.add_argument("--timeframe", default="1h")
@@ -137,6 +152,7 @@ def build_parser() -> argparse.ArgumentParser:
     vol.add_argument("--timeout-ms", type=int, default=15000)
 
     breakout = subparsers.add_parser("scan-breakouts", help="Scan breakout rules")
+    _add_shared_output_flags(breakout)
     breakout.add_argument("--exchange", required=True)
     breakout.add_argument("--quote", default="USDT")
     breakout.add_argument("--timeframe", default="1h")
