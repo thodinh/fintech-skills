@@ -27,13 +27,6 @@ Preferred launchers from the repo root:
 bash ./scripts/run-tool.sh --help
 ```
 
-Compatibility launchers for environments that mount the repo under `/workspace`:
-
-```bash
-bash /workspace/scripts/run-tool.sh --help
-./workspace/scripts/run-tool.sh --help
-```
-
 If the sandbox mount point is unclear, first run:
 
 ```bash
@@ -103,5 +96,5 @@ Successful calls return a dictionary with:
 - Public APIs may differ by market type or symbol support.
 - Most scanner functions loop over many symbols, so keep `max_symbols` conservative.
 - If you want a local editable install for development, keep using the wrapper so the vendored runtime is available.
-- Do not test the bundled dependency with plain `python3 -c "import ccxt"` unless you also set `PYTHONPATH=/workspace/vendor:/workspace/src`.
-- In unknown sandboxes, discover the launcher path first instead of assuming `/workspace` exists.
+- Do not test the bundled dependency with plain `python3 -c "import ccxt"` unless you also set `PYTHONPATH=./vendor:./src`.
+- In unknown sandboxes, discover the launcher path first instead of assuming any fixed mount point.

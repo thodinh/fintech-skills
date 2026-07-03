@@ -1,7 +1,7 @@
 ---
 name: finance-market-skills
 description: "Use when the user asks for crypto token prices, ticker data, OHLCV candles, order books, trades, technical indicators, or market scans powered by ccxt."
-allowed-tools: Bash(./finance-market-skills:*), Bash(finance-market-skills:*), Bash(./scripts/run-tool.sh:*), Bash(scripts/run-tool.sh:*), Bash(bash ./scripts/run-tool.sh:*), Bash(bash scripts/run-tool.sh:*), Bash(/workspace/scripts/run-tool.sh:*), Bash(./workspace/scripts/run-tool.sh:*), Bash(find:*), Bash(pwd:*), Bash(ls:*)
+allowed-tools: Bash(./finance-market-skills:*), Bash(finance-market-skills:*), Bash(./scripts/run-tool.sh:*), Bash(scripts/run-tool.sh:*), Bash(bash ./scripts/run-tool.sh:*), Bash(bash scripts/run-tool.sh:*), Bash(find:*), Bash(pwd:*), Bash(ls:*)
 ---
 
 # Finance Market
@@ -42,20 +42,12 @@ The runtime is self-contained inside this repo:
 - `src/` contains the `finance_market_skills` package
 - `scripts/run-tool.sh` injects both paths into `PYTHONPATH`
 - `finance-market-skills` at the repo root is the preferred launcher because it resolves relative to the repo itself
-- `/workspace/scripts/run-tool.sh` and `./workspace/scripts/run-tool.sh` are compatibility shims for environments that really do mount the repo at `/workspace`
 
 Preferred commands when the agent is already in the repo root:
 
 ```bash
 ./finance-market-skills --help
 bash ./scripts/run-tool.sh --help
-```
-
-Compatibility commands for environments that expose `/workspace`:
-
-```bash
-bash /workspace/scripts/run-tool.sh --help
-./workspace/scripts/run-tool.sh --help
 ```
 
 ## Health Check
@@ -72,9 +64,9 @@ Then prefer the first working option in this order:
 
 1. `./finance-market-skills --help`
 2. `bash ./scripts/run-tool.sh --help`
-3. `bash /workspace/scripts/run-tool.sh --help`
+3. If neither exists, the skill was likely installed incorrectly
 
-Do not assume `/workspace` exists in every sandbox.
+This contract assumes the installed skill directory itself is the runtime.
 
 ## Core Commands
 
@@ -165,7 +157,6 @@ Typical failure shape:
 - If the user only wants a short answer, summarize from `summary` and `highlights` instead of dumping raw JSON.
 - Never use `python3 -c "import ccxt; ..."` directly, because the bundled runtime is exposed through the wrapper rather than the global Python environment.
 - Prefer `./finance-market-skills ...` or `bash ./scripts/run-tool.sh ...` when the repo root is available as the current directory.
-- Use `/workspace/...` only as a compatibility fallback when the sandbox actually mounts the repo there.
 - For agent execution, prefer the repo-local launchers over `python -m ...` so the runtime does not depend on package installation or global `PYTHONPATH`.
 
 ## Troubleshooting
