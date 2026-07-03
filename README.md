@@ -16,6 +16,12 @@ Python toolkit for AI agents to fetch crypto market data from `ccxt`, compute co
 python -m pip install -e ".[dev]"
 ```
 
+This also installs the CLI entrypoint:
+
+```bash
+crypto-market-toolkit --help
+```
+
 ## Usage
 
 ```python
@@ -31,6 +37,31 @@ print(
     )["highlights"]
 )
 print(scan_top_movers("binance")["data"]["results"][:3])
+```
+
+## CLI Usage
+
+```bash
+crypto-market-toolkit get-ticker --exchange binance --symbol BTC/USDT --pretty
+
+crypto-market-toolkit compute-indicators \
+  --exchange binance \
+  --symbol BTC/USDT \
+  --timeframe 1h \
+  --indicators rsi,macd,bbands \
+  --pretty
+
+crypto-market-toolkit scan-top-movers --exchange binance --quote USDT --top-n 10 --pretty
+```
+
+## Skill Folder
+
+The repo now includes a ready-to-use Skill at [SKILL.md](file:///workspace/skills/crypto-market-toolkit/SKILL.md) with companion metadata at [openai.yaml](file:///workspace/skills/crypto-market-toolkit/agents/openai.yaml).
+
+Local wrapper:
+
+```bash
+./skills/crypto-market-toolkit/scripts/run-tool.sh get-price --exchange binance --symbol BTC/USDT --pretty
 ```
 
 ## Response Shape
